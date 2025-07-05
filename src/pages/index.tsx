@@ -28,6 +28,9 @@ export default function Home() {
   const [chatProcessing, setChatProcessing] = useState(false);
   const [chatLog, setChatLog] = useState<Message[]>([]);
   const [assistantMessage, setAssistantMessage] = useState("");
+  const [ttsService, setTtsService] = useState("koeiromap");
+  const [aivisSpeechUrl, setAivisSpeechUrl] = useState("http://127.0.0.1:10101");
+  const [aivisSpeakerId, setAivisSpeakerId] = useState(888753760);
 
   useEffect(() => {
     if (window.localStorage.getItem("chatVRMParams")) {
@@ -38,6 +41,11 @@ export default function Home() {
       setKoeiroParam(params.koeiroParam ?? DEFAULT_PARAM);
       setGeminiModel(params.geminiModel ?? "gemini-2.0-flash-001");
       setChatLog(params.chatLog ?? []);
+      setTtsService(params.ttsService ?? "koeiromap");
+      setAivisSpeechUrl(params.aivisSpeechUrl ?? "http://127.0.0.1:10101");
+      // 古い設定値（1）を正しいデフォルト値に修正
+      const speakerId = params.aivisSpeakerId;
+      setAivisSpeakerId(speakerId === 1 ? 888753760 : speakerId ?? 888753760);
     }
   }, []);
 
@@ -45,10 +53,18 @@ export default function Home() {
     process.nextTick(() =>
       window.localStorage.setItem(
         "chatVRMParams",
-        JSON.stringify({ systemPrompt, koeiroParam, geminiModel, chatLog })
+        JSON.stringify({ 
+          systemPrompt, 
+          koeiroParam, 
+          geminiModel, 
+          chatLog,
+          ttsService,
+          aivisSpeechUrl,
+          aivisSpeakerId
+        })
       )
     );
-  }, [systemPrompt, koeiroParam, chatLog]);
+  }, [systemPrompt, koeiroParam, chatLog, geminiModel, ttsService, aivisSpeechUrl, aivisSpeakerId]);
 
   const handleChangeChatLog = useCallback(
     (targetIndex: number, text: string) => {
@@ -70,9 +86,9 @@ export default function Home() {
       onStart?: () => void,
       onEnd?: () => void
     ) => {
-      speakCharacter(screenplay, viewer, koeiromapKey, onStart, onEnd);
+      speakCharacter(screenplay, viewer, koeiromapKey, ttsService, aivisSpeechUrl, aivisSpeakerId, onStart, onEnd);
     },
-    [viewer, koeiromapKey]
+    [viewer, koeiromapKey, ttsService, aivisSpeechUrl, aivisSpeakerId]
   );
 
   /**
@@ -209,6 +225,9 @@ export default function Home() {
         assistantMessage={assistantMessage}
         geminiModel={geminiModel}
         koeiromapKey={koeiromapKey}
+        ttsService={ttsService}
+        aivisSpeechUrl={aivisSpeechUrl}
+        aivisSpeakerId={aivisSpeakerId}
         onChangeGoogleApiKey={setGoogleApiKey}
         onChangeSystemPrompt={setSystemPrompt}
         onChangeChatLog={handleChangeChatLog}
@@ -217,6 +236,9 @@ export default function Home() {
         handleClickResetChatLog={() => setChatLog([])}
         handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
         onChangeKoeiromapKey={setKoeiromapKey}
+        onChangeTtsService={(e: React.ChangeEvent<HTMLSelectElement>) => setTtsService(e.target.value)}
+        onChangeAivisSpeechUrl={(e: React.ChangeEvent<HTMLInputElement>) => setAivisSpeechUrl(e.target.value)}
+        onChangeAivisSpeakerId={(e: React.ChangeEvent<HTMLSelectElement>) => setAivisSpeakerId(Number(e.target.value))}
       />
       <GitHubLink />
     </div>

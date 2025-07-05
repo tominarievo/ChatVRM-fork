@@ -15,6 +15,9 @@ type Props = {
   assistantMessage: string;
   geminiModel: string;
   koeiromapKey: string;
+  ttsService: string;
+  aivisSpeechUrl: string;
+  aivisSpeakerId: number;
   onChangeSystemPrompt: (systemPrompt: string) => void;
   onChangeGoogleApiKey: (key: string) => void;
   onChangeChatLog: (index: number, text: string) => void;
@@ -23,6 +26,9 @@ type Props = {
   handleClickResetChatLog: () => void;
   handleClickResetSystemPrompt: () => void;
   onChangeKoeiromapKey: (key: string) => void;
+  onChangeTtsService: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChangeAivisSpeechUrl: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeAivisSpeakerId: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 export const Menu = ({
   googleApiKey,
@@ -32,6 +38,9 @@ export const Menu = ({
   assistantMessage,
   geminiModel,
   koeiromapKey,
+  ttsService,
+  aivisSpeechUrl,
+  aivisSpeakerId,
   onChangeSystemPrompt,
   onChangeGoogleApiKey,
   onChangeChatLog,
@@ -40,6 +49,9 @@ export const Menu = ({
   handleClickResetChatLog,
   handleClickResetSystemPrompt,
   onChangeKoeiromapKey,
+  onChangeTtsService,
+  onChangeAivisSpeechUrl,
+  onChangeAivisSpeakerId,
 }: Props) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showChatLog, setShowChatLog] = useState(false);
@@ -146,6 +158,9 @@ export const Menu = ({
           koeiroParam={koeiroParam}
           geminiModel={geminiModel}
           koeiromapKey={koeiromapKey}
+          ttsService={ttsService}
+          aivisSpeechUrl={aivisSpeechUrl}
+          aivisSpeakerId={aivisSpeakerId}
           onClickClose={() => setShowSettings(false)}
           onChangeGoogleApiKey={handleGoogleApiKeyChange}
           onChangeSystemPrompt={handleChangeSystemPrompt}
@@ -156,6 +171,9 @@ export const Menu = ({
           onClickResetChatLog={handleClickResetChatLog}
           onClickResetSystemPrompt={handleClickResetSystemPrompt}
           onChangeKoeiromapKey={handleChangeKoeiromapKey}
+          onChangeTtsService={onChangeTtsService}
+          onChangeAivisSpeechUrl={onChangeAivisSpeechUrl}
+          onChangeAivisSpeakerId={onChangeAivisSpeakerId}
         />
       )}
       {!showChatLog && assistantMessage && (
