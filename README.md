@@ -15,9 +15,10 @@ Koemotion API Key
 ## 起動方法
 
 ```bash
-git clone git@github.com:pixiv/ChatVRM.git
+git clone https://github.com/ctdi2025-team1/ChatVRM-fork.git
+cd ChatVRM-fork
 npm install
-npm run dev
+npm run dev # -> localhost:3000にアクセスして、2つのAPIキーを入力
 ```
 
 # 以下参考: ChatVRM (Original)
