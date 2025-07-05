@@ -20,7 +20,7 @@ npm install
 npm run dev
 ```
 
-# ChatVRM (Original)
+# 以下参考: ChatVRM (Original)
 
 ChatVRMは、技術共有およびデモンストレーションを主目的としたプロジェクトです。
 
