@@ -16,12 +16,14 @@ type Props = {
   systemPrompt: string;
   chatLog: Message[];
   koeiroParam: KoeiroParam;
+  geminiModel: string;
   koeiromapKey: string;
   onClickClose: () => void;
   onChangeGoogleApiKey: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeSystemPrompt: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onChangeChatLog: (index: number, text: string) => void;
   onChangeKoeiroParam: (x: number, y: number) => void;
+  onChangeGeminiModel: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   onClickOpenVrmFile: () => void;
   onClickResetChatLog: () => void;
   onClickResetSystemPrompt: () => void;
@@ -32,12 +34,14 @@ export const Settings = ({
   chatLog,
   systemPrompt,
   koeiroParam,
+  geminiModel,
   koeiromapKey,
   onClickClose,
   onChangeSystemPrompt,
   onChangeGoogleApiKey,
   onChangeChatLog,
   onChangeKoeiroParam,
+  onChangeGeminiModel,
   onClickOpenVrmFile,
   onClickResetChatLog,
   onClickResetSystemPrompt,
@@ -72,11 +76,20 @@ export const Settings = ({
               />
               で取得できます。取得したAPIキーをフォームに入力してください。
             </div>
+            <div className="my-16 typography-20 font-bold">Gemini モデル</div>
+            <select
+              className="px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
+              value={geminiModel}
+              onChange={onChangeGeminiModel}
+            >
+              <option value="gemini-2.0-flash-001">Gemini 2.0 Flash</option>
+              <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini-2.5-flash-lite-preview-06-17">Gemini 2.5 Flash Lite Preview</option>
+            </select>
             <div className="my-16">
               Gemini
               APIはブラウザから直接アクセスしています。また、APIキーや会話内容はピクシブのサーバには保存されません。
-              <br />
-              ※利用しているモデルはGemini Proです。
             </div>
           </div>
           <div className="my-40">

@@ -22,6 +22,7 @@ export default function Home() {
 
   const [systemPrompt, setSystemPrompt] = useState(SYSTEM_PROMPT);
   const [googleApiKey, setGoogleApiKey] = useState("");
+  const [geminiModel, setGeminiModel] = useState("gemini-2.0-flash-001");
   const [koeiromapKey, setKoeiromapKey] = useState("");
   const [koeiroParam, setKoeiroParam] = useState<KoeiroParam>(DEFAULT_PARAM);
   const [chatProcessing, setChatProcessing] = useState(false);
@@ -35,6 +36,7 @@ export default function Home() {
       );
       setSystemPrompt(params.systemPrompt ?? SYSTEM_PROMPT);
       setKoeiroParam(params.koeiroParam ?? DEFAULT_PARAM);
+      setGeminiModel(params.geminiModel ?? "gemini-2.0-flash-001");
       setChatLog(params.chatLog ?? []);
     }
   }, []);
@@ -43,7 +45,7 @@ export default function Home() {
     process.nextTick(() =>
       window.localStorage.setItem(
         "chatVRMParams",
-        JSON.stringify({ systemPrompt, koeiroParam, chatLog })
+        JSON.stringify({ systemPrompt, koeiroParam, geminiModel, chatLog })
       )
     );
   }, [systemPrompt, koeiroParam, chatLog]);
@@ -104,7 +106,7 @@ export default function Home() {
         ...messageLog,
       ];
 
-      const stream = await getChatResponseStream(messages, googleApiKey).catch(
+      const stream = await getChatResponseStream(messages, googleApiKey, geminiModel).catch(
         (e) => {
           console.error(e);
           return null;
@@ -182,7 +184,7 @@ export default function Home() {
       setChatLog(messageLogAssistant);
       setChatProcessing(false);
     },
-    [systemPrompt, chatLog, handleSpeakAi, googleApiKey, koeiroParam]
+    [systemPrompt, chatLog, handleSpeakAi, googleApiKey, geminiModel, koeiroParam]
   );
 
   return (
@@ -205,11 +207,13 @@ export default function Home() {
         chatLog={chatLog}
         koeiroParam={koeiroParam}
         assistantMessage={assistantMessage}
+        geminiModel={geminiModel}
         koeiromapKey={koeiromapKey}
         onChangeGoogleApiKey={setGoogleApiKey}
         onChangeSystemPrompt={setSystemPrompt}
         onChangeChatLog={handleChangeChatLog}
         onChangeKoeiromapParam={setKoeiroParam}
+        onChangeGeminiModel={setGeminiModel}
         handleClickResetChatLog={() => setChatLog([])}
         handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
         onChangeKoeiromapKey={setKoeiromapKey}
