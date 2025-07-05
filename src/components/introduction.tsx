@@ -2,24 +2,24 @@ import { useState, useCallback } from "react";
 import { Link } from "./link";
 
 type Props = {
-  openAiKey: string;
+  googleApiKey: string;
   koeiroMapKey: string;
-  onChangeAiKey: (openAiKey: string) => void;
+  onChangeGoogleApiKey: (googleApiKey: string) => void;
   onChangeKoeiromapKey: (koeiromapKey: string) => void;
 };
 export const Introduction = ({
-  openAiKey,
+  googleApiKey,
   koeiroMapKey,
-  onChangeAiKey,
+  onChangeGoogleApiKey,
   onChangeKoeiromapKey,
 }: Props) => {
   const [opened, setOpened] = useState(true);
 
-  const handleAiKeyChange = useCallback(
+  const handleGoogleApiKeyChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChangeAiKey(event.target.value);
+      onChangeGoogleApiKey(event.target.value);
     },
-    [onChangeAiKey]
+    [onChangeGoogleApiKey]
   );
 
   const handleKoeiromapKeyChange = useCallback(
@@ -112,32 +112,30 @@ export const Introduction = ({
             />
           </div>
         </div>
-        <div className="my-24">
-          <div className="my-8 font-bold typography-20 text-secondary">
-            OpenAI APIキー
-          </div>
-          <input
-            type="text"
-            placeholder="sk-..."
-            value={openAiKey}
-            onChange={handleAiKeyChange}
-            className="my-4 px-16 py-8 w-full h-40 bg-surface3 hover:bg-surface3-hover rounded-4 text-ellipsis"
-          ></input>
-          <div>
-            APIキーは
-            <Link
-              url="https://platform.openai.com/account/api-keys"
-              label="OpenAIのサイト"
-            />
-            で取得できます。取得したAPIキーをフォームに入力してください。
-          </div>
-          <div className="my-16">
-            ChatGPT
-            APIはブラウザから直接アクセスしています。また、APIキーや会話内容はピクシブのサーバには保存されません。
-            <br />
-            ※利用しているモデルはChatGPT API (GPT-3.5)です。
-          </div>
-        </div>
+        <div className="my-8 font-bold typography-20 text-secondary">
+              Google APIキー
+            </div>
+            <input
+              type="text"
+              placeholder="AIza-..."
+              value={googleApiKey}
+              onChange={handleGoogleApiKeyChange}
+              className="my-4 px-16 py-8 w-full h-40 bg-surface3 hover:bg-surface3-hover rounded-4 text-ellipsis"
+            ></input>
+            <div>
+              APIキーは
+              <Link
+                url="https://aistudio.google.com/app/apikey"
+                label="Google AI Studio"
+              />
+              で取得できます。取得したAPIキーをフォームに入力してください。
+            </div>
+            <div className="my-16">
+              Gemini
+              APIはブラウザから直接アクセスしています。また、APIキーや会話内容はピクシブのサーバには保存されません。
+              <br />
+              ※利用しているモデルはGemini Proです。
+            </div>
         <div className="my-24">
           <button
             onClick={() => {

@@ -10,7 +10,8 @@ import { speakCharacter } from "@/features/messages/speakCharacter";
 import { MessageInputContainer } from "@/components/messageInputContainer";
 import { SYSTEM_PROMPT } from "@/features/constants/systemPromptConstants";
 import { KoeiroParam, DEFAULT_PARAM } from "@/features/constants/koeiroParam";
-import { getChatResponseStream } from "@/features/chat/openAiChat";
+import { getChatResponseStream } from "@/features/chat/googleGeminiChat";
+
 import { Introduction } from "@/components/introduction";
 import { Menu } from "@/components/menu";
 import { GitHubLink } from "@/components/githubLink";
@@ -20,7 +21,7 @@ export default function Home() {
   const { viewer } = useContext(ViewerContext);
 
   const [systemPrompt, setSystemPrompt] = useState(SYSTEM_PROMPT);
-  const [openAiKey, setOpenAiKey] = useState("");
+  const [googleApiKey, setGoogleApiKey] = useState("");
   const [koeiromapKey, setKoeiromapKey] = useState("");
   const [koeiroParam, setKoeiroParam] = useState<KoeiroParam>(DEFAULT_PARAM);
   const [chatProcessing, setChatProcessing] = useState(false);
@@ -77,7 +78,7 @@ export default function Home() {
    */
   const handleSendChat = useCallback(
     async (text: string) => {
-      if (!openAiKey) {
+      if (!googleApiKey) {
         setAssistantMessage("APIキーが入力されていません");
         return;
       }
@@ -103,7 +104,7 @@ export default function Home() {
         ...messageLog,
       ];
 
-      const stream = await getChatResponseStream(messages, openAiKey).catch(
+      const stream = await getChatResponseStream(messages, googleApiKey).catch(
         (e) => {
           console.error(e);
           return null;
@@ -181,16 +182,16 @@ export default function Home() {
       setChatLog(messageLogAssistant);
       setChatProcessing(false);
     },
-    [systemPrompt, chatLog, handleSpeakAi, openAiKey, koeiroParam]
+    [systemPrompt, chatLog, handleSpeakAi, googleApiKey, koeiroParam]
   );
 
   return (
     <div className={"font-M_PLUS_2"}>
       <Meta />
       <Introduction
-        openAiKey={openAiKey}
+        googleApiKey={googleApiKey}
         koeiroMapKey={koeiromapKey}
-        onChangeAiKey={setOpenAiKey}
+        onChangeGoogleApiKey={setGoogleApiKey}
         onChangeKoeiromapKey={setKoeiromapKey}
       />
       <VrmViewer />
@@ -199,13 +200,13 @@ export default function Home() {
         onChatProcessStart={handleSendChat}
       />
       <Menu
-        openAiKey={openAiKey}
+        googleApiKey={googleApiKey}
         systemPrompt={systemPrompt}
         chatLog={chatLog}
         koeiroParam={koeiroParam}
         assistantMessage={assistantMessage}
         koeiromapKey={koeiromapKey}
-        onChangeAiKey={setOpenAiKey}
+        onChangeGoogleApiKey={setGoogleApiKey}
         onChangeSystemPrompt={setSystemPrompt}
         onChangeChatLog={handleChangeChatLog}
         onChangeKoeiromapParam={setKoeiroParam}

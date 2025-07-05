@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import { getChatResponse } from "@/features/chat/googleGeminiChat";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -20,19 +20,7 @@ export default async function handler(
     return;
   }
 
-  const configuration = new Configuration({
-    apiKey: apiKey,
-  });
-
-  const openai = new OpenAIApi(configuration);
-
-  const { data } = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: req.body.messages,
-  });
-
-  const [aiRes] = data.choices;
-  const message = aiRes.message?.content || "エラーが発生しました";
+  const { message } = await getChatResponse(req.body.messages, apiKey);
 
   res.status(200).json({ message: message });
 }

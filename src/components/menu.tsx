@@ -8,14 +8,14 @@ import { ViewerContext } from "@/features/vrmViewer/viewerContext";
 import { AssistantText } from "./assistantText";
 
 type Props = {
-  openAiKey: string;
+  googleApiKey: string;
   systemPrompt: string;
   chatLog: Message[];
   koeiroParam: KoeiroParam;
   assistantMessage: string;
   koeiromapKey: string;
   onChangeSystemPrompt: (systemPrompt: string) => void;
-  onChangeAiKey: (key: string) => void;
+  onChangeGoogleApiKey: (key: string) => void;
   onChangeChatLog: (index: number, text: string) => void;
   onChangeKoeiromapParam: (param: KoeiroParam) => void;
   handleClickResetChatLog: () => void;
@@ -23,14 +23,14 @@ type Props = {
   onChangeKoeiromapKey: (key: string) => void;
 };
 export const Menu = ({
-  openAiKey,
+  googleApiKey,
   systemPrompt,
   chatLog,
   koeiroParam,
   assistantMessage,
   koeiromapKey,
   onChangeSystemPrompt,
-  onChangeAiKey,
+  onChangeGoogleApiKey,
   onChangeChatLog,
   onChangeKoeiromapParam,
   handleClickResetChatLog,
@@ -49,11 +49,11 @@ export const Menu = ({
     [onChangeSystemPrompt]
   );
 
-  const handleAiKeyChange = useCallback(
+  const handleGoogleApiKeyChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChangeAiKey(event.target.value);
+      onChangeGoogleApiKey(event.target.value);
     },
-    [onChangeAiKey]
+    [onChangeGoogleApiKey]
   );
 
   const handleChangeKoeiromapKey = useCallback(
@@ -129,13 +129,13 @@ export const Menu = ({
       {showChatLog && <ChatLog messages={chatLog} />}
       {showSettings && (
         <Settings
-          openAiKey={openAiKey}
+          googleApiKey={googleApiKey}
           chatLog={chatLog}
           systemPrompt={systemPrompt}
           koeiroParam={koeiroParam}
           koeiromapKey={koeiromapKey}
           onClickClose={() => setShowSettings(false)}
-          onChangeAiKey={handleAiKeyChange}
+          onChangeGoogleApiKey={handleGoogleApiKeyChange}
           onChangeSystemPrompt={handleChangeSystemPrompt}
           onChangeChatLog={onChangeChatLog}
           onChangeKoeiroParam={handleChangeKoeiroParam}
