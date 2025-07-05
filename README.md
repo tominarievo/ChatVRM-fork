@@ -1,4 +1,26 @@
-# ChatVRM
+# ChatVRM-fork
+
+アバター実験用
+
+## 事前に必要なもの
+
+Google Gemini API Key
+- 取得用ページ：https://aistudio.google.com/app/apikey?hl=ja
+
+Koemotion API Key
+- 取得方法：https://github.com/rinnakk/Koemotion/blob/master/docs/subscription.md
+
+※いずれも無料枠でそれなりに使用可能
+
+## 起動方法
+
+```bash
+git clone git@github.com:pixiv/ChatVRM.git
+npm install
+npm run dev
+```
+
+# ChatVRM (Original)
 
 ChatVRMは、技術共有およびデモンストレーションを主目的としたプロジェクトです。
 
