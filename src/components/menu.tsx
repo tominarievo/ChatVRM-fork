@@ -13,11 +13,13 @@ type Props = {
   chatLog: Message[];
   koeiroParam: KoeiroParam;
   assistantMessage: string;
+  geminiModel: string;
   koeiromapKey: string;
   onChangeSystemPrompt: (systemPrompt: string) => void;
   onChangeGoogleApiKey: (key: string) => void;
   onChangeChatLog: (index: number, text: string) => void;
   onChangeKoeiromapParam: (param: KoeiroParam) => void;
+  onChangeGeminiModel: (model: string) => void;
   handleClickResetChatLog: () => void;
   handleClickResetSystemPrompt: () => void;
   onChangeKoeiromapKey: (key: string) => void;
@@ -28,11 +30,13 @@ export const Menu = ({
   chatLog,
   koeiroParam,
   assistantMessage,
+  geminiModel,
   koeiromapKey,
   onChangeSystemPrompt,
   onChangeGoogleApiKey,
   onChangeChatLog,
   onChangeKoeiromapParam,
+  onChangeGeminiModel,
   handleClickResetChatLog,
   handleClickResetSystemPrompt,
   onChangeKoeiromapKey,
@@ -61,6 +65,13 @@ export const Menu = ({
       onChangeKoeiromapKey(event.target.value);
     },
     [onChangeKoeiromapKey]
+  );
+
+  const handleChangeGeminiModel = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      onChangeGeminiModel(event.target.value);
+    },
+    [onChangeGeminiModel]
   );
 
   const handleChangeKoeiroParam = useCallback(
@@ -133,12 +144,14 @@ export const Menu = ({
           chatLog={chatLog}
           systemPrompt={systemPrompt}
           koeiroParam={koeiroParam}
+          geminiModel={geminiModel}
           koeiromapKey={koeiromapKey}
           onClickClose={() => setShowSettings(false)}
           onChangeGoogleApiKey={handleGoogleApiKeyChange}
           onChangeSystemPrompt={handleChangeSystemPrompt}
           onChangeChatLog={onChangeChatLog}
           onChangeKoeiroParam={handleChangeKoeiroParam}
+          onChangeGeminiModel={handleChangeGeminiModel}
           onClickOpenVrmFile={handleClickOpenVrmFile}
           onClickResetChatLog={handleClickResetChatLog}
           onClickResetSystemPrompt={handleClickResetSystemPrompt}

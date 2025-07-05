@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { Message } from "../messages/messages";
 
-export async function getChatResponse(messages: Message[], apiKey: string) {
+export async function getChatResponse(messages: Message[], apiKey: string, model: string = "gemini-2.0-flash-001") {
   if (!apiKey) {
     throw new Error("Invalid API Key");
   }
@@ -13,7 +13,7 @@ export async function getChatResponse(messages: Message[], apiKey: string) {
     parts: [{ text: m.content }],
   }));
 
-  const result = await genAI.models.generateContent({ contents });
+  const result = await genAI.models.generateContent({ model, contents });
   const response = await result.response;
   const text = response.text();
 
@@ -22,7 +22,8 @@ export async function getChatResponse(messages: Message[], apiKey: string) {
 
 export async function getChatResponseStream(
   messages: Message[],
-  apiKey: string
+  apiKey: string,
+  model: string = "gemini-2.0-flash-001"
 ) {
   if (!apiKey) {
     throw new Error("Invalid API Key");
@@ -36,7 +37,7 @@ export async function getChatResponseStream(
   }));
 
   const result = await genAI.models.generateContentStream({
-    model: 'gemini-2.0-flash-001',
+    model: model,
     contents: contents,
   });
 
