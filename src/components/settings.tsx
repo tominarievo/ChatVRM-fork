@@ -18,6 +18,9 @@ type Props = {
   koeiroParam: KoeiroParam;
   geminiModel: string;
   koeiromapKey: string;
+  ttsService: string;
+  aivisSpeechUrl: string;
+  aivisSpeakerId: number;
   onClickClose: () => void;
   onChangeGoogleApiKey: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeSystemPrompt: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -28,6 +31,9 @@ type Props = {
   onClickResetChatLog: () => void;
   onClickResetSystemPrompt: () => void;
   onChangeKoeiromapKey: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeTtsService: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChangeAivisSpeechUrl: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeAivisSpeakerId: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 export const Settings = ({
   googleApiKey,
@@ -36,6 +42,9 @@ export const Settings = ({
   koeiroParam,
   geminiModel,
   koeiromapKey,
+  ttsService,
+  aivisSpeechUrl,
+  aivisSpeakerId,
   onClickClose,
   onChangeSystemPrompt,
   onChangeGoogleApiKey,
@@ -46,6 +55,9 @@ export const Settings = ({
   onClickResetChatLog,
   onClickResetSystemPrompt,
   onChangeKoeiromapKey,
+  onChangeTtsService,
+  onChangeAivisSpeechUrl,
+  onChangeAivisSpeakerId,
 }: Props) => {
   return (
     <div className="absolute z-40 w-full h-full bg-white/80 backdrop-blur ">
@@ -118,24 +130,74 @@ export const Settings = ({
           </div>
           <div className="my-40">
             <div className="my-16 typography-20 font-bold">声の調整</div>
-            <div>
-              KoemotionのKoeiromap APIを使用しています。詳しくは
-              <Link
-                url="https://koemotion.rinna.co.jp"
-                label="https://koemotion.rinna.co.jp"
-              />
-              をご覧ください。
-            </div>
-            <div className="mt-16 font-bold">API キー</div>
-            <div className="mt-8">
-              <input
-                className="text-ellipsis px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
-                type="text"
-                placeholder="..."
-                value={koeiromapKey}
-                onChange={onChangeKoeiromapKey}
-              />
-            </div>
+            <div className="my-16 font-bold">TTS サービス</div>
+            <select
+              className="px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
+              value={ttsService}
+              onChange={onChangeTtsService}
+            >
+              <option value="koeiromap">Koeiromap (Koemotion)</option>
+              <option value="aivis">Aivis Speech</option>
+            </select>
+            
+            {ttsService === "koeiromap" && (
+              <>
+                <div className="mt-16">
+                  KoemotionのKoeiromap APIを使用しています。詳しくは
+                  <Link
+                    url="https://koemotion.rinna.co.jp"
+                    label="https://koemotion.rinna.co.jp"
+                  />
+                  をご覧ください。
+                </div>
+                <div className="mt-16 font-bold">API キー</div>
+                <div className="mt-8">
+                  <input
+                    className="text-ellipsis px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
+                    type="text"
+                    placeholder="..."
+                    value={koeiromapKey}
+                    onChange={onChangeKoeiromapKey}
+                  />
+                </div>
+              </>
+            )}
+            
+            {ttsService === "aivis" && (
+              <>
+                <div className="mt-16">
+                  Aivis Speechのローカルサーバーを使用します。
+                </div>
+                <div className="mt-16 font-bold">サーバー URL</div>
+                <div className="mt-8">
+                  <input
+                    className="text-ellipsis px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
+                    type="text"
+                    placeholder="http://127.0.0.1:10101"
+                    value={aivisSpeechUrl}
+                    onChange={onChangeAivisSpeechUrl}
+                  />
+                </div>
+                <div className="mt-16 font-bold">話者 ID</div>
+                <select
+                  className="px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
+                  value={aivisSpeakerId}
+                  onChange={onChangeAivisSpeakerId}
+                >
+                  <option value={888753760}>Anneli (ノーマル)</option>
+                  <option value={888753761}>Anneli (通常)</option>
+                  <option value={888753762}>Anneli (テンション高め)</option>
+                  <option value={888753763}>Anneli (落ち着き)</option>
+                  <option value={888753764}>Anneli (上機嫌)</option>
+                  <option value={888753765}>Anneli (怒り・悲しみ)</option>
+                  <option value={1388823424}>凛音エル (ノーマル)</option>
+                  <option value={1388823425}>凛音エル (Angry)</option>
+                  <option value={1388823426}>凛音エル (Fear)</option>
+                  <option value={1388823427}>凛音エル (Happy)</option>
+                  <option value={1388823428}>凛音エル (Sad)</option>
+                </select>
+              </>
+            )}
 
             <div className="mt-16 font-bold">プリセット</div>
             <div className="my-8 grid grid-cols-2 gap-[8px]">

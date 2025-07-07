@@ -13,6 +13,9 @@ const createSpeakCharacter = () => {
     screenplay: Screenplay,
     viewer: Viewer,
     koeiroApiKey: string,
+    ttsService: string = "koeiromap",
+    aivisSpeechUrl: string = "http://127.0.0.1:10101",
+    aivisSpeakerId: number = 888753760,
     onStart?: () => void,
     onComplete?: () => void
   ) => {
@@ -22,7 +25,7 @@ const createSpeakCharacter = () => {
         await wait(1000 - (now - lastTime));
       }
 
-      const buffer = await fetchAudio(screenplay.talk, koeiroApiKey).catch(
+      const buffer = await fetchAudio(screenplay.talk, koeiroApiKey, ttsService, aivisSpeechUrl, aivisSpeakerId).catch(
         () => null
       );
       lastTime = Date.now();
@@ -49,14 +52,20 @@ export const speakCharacter = createSpeakCharacter();
 
 export const fetchAudio = async (
   talk: Talk,
-  apiKey: string
+  apiKey: string,
+  ttsService: string = "koeiromap",
+  aivisSpeechUrl: string = "http://127.0.0.1:10101",
+  aivisSpeakerId: number = 888753760
 ): Promise<ArrayBuffer> => {
   const ttsVoice = await synthesizeVoiceApi(
     talk.message,
     talk.speakerX,
     talk.speakerY,
     talk.style,
-    apiKey
+    apiKey,
+    ttsService,
+    aivisSpeechUrl,
+    aivisSpeakerId
   );
   const url = ttsVoice.audio;
 
@@ -64,7 +73,19 @@ export const fetchAudio = async (
     throw new Error("Something went wrong");
   }
 
-  const resAudio = await fetch(url);
-  const buffer = await resAudio.arrayBuffer();
-  return buffer;
+  if (ttsService === "aivis") {
+    // Aivis SpeechはBase64エンコードされた音声データを返す
+    const audioData = atob(url);
+    const buffer = new ArrayBuffer(audioData.length);
+    const view = new Uint8Array(buffer);
+    for (let i = 0; i < audioData.length; i++) {
+      view[i] = audioData.charCodeAt(i);
+    }
+    return buffer;
+  } else {
+    // Koeiromapの場合はURLから音声データを取得
+    const resAudio = await fetch(url);
+    const buffer = await resAudio.arrayBuffer();
+    return buffer;
+  }
 };

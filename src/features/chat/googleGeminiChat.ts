@@ -6,7 +6,7 @@ export async function getChatResponse(messages: Message[], apiKey: string, model
     throw new Error("Invalid API Key");
   }
 
-  const genAI = new GoogleGenAI(apiKey);
+  const genAI = new GoogleGenAI({apiKey: apiKey});
 
   const contents = messages.map((m) => ({
     role: m.role === "user" ? "user" : "model",
@@ -14,8 +14,7 @@ export async function getChatResponse(messages: Message[], apiKey: string, model
   }));
 
   const result = await genAI.models.generateContent({ model, contents });
-  const response = await result.response;
-  const text = response.text();
+  const text = result.text || "";
 
   return { message: text };
 }
@@ -45,8 +44,10 @@ export async function getChatResponseStream(
     async start(controller: ReadableStreamDefaultController) {
       try {
         for await (const chunk of result) {
-          const chunkText = await chunk.text;
-          controller.enqueue(chunkText);
+          const chunkText = chunk.text || "";
+          if (chunkText) {
+            controller.enqueue(chunkText);
+          }
         }
       } catch (error) {
         controller.error(error);
